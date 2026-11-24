@@ -148,12 +148,6 @@ print('    y-axis "Solved"')
 print(f"    bar [{', '.join(str(t['solvedCount']) for t in tags)}]")
 print("```")
 print()
-print("```mermaid")
-print("pie title 상위 6개 태그")
-for t in tags[:6]:
-    print(f'    "{t["key"]}" : {t["solvedCount"]}')
-print("```")
-print()
 print("| Tag | Solved | Rating |")
 print("| --- | -----: | -----: |")
 for t in tags:
