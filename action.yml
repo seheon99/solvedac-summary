@@ -6,6 +6,12 @@ inputs:
   username:
     description: "백준에서 사용중인 유저 이름"
     required: true
+  client-id:
+    description: "solved.ac API client ID"
+    required: true
+  client-secret:
+    description: "solved.ac API client secret"
+    required: true
 
 runs:
   using: "composite"
@@ -15,6 +21,8 @@ runs:
       shell: bash
       env:
         INPUT_USERNAME: ${{ inputs.username }}
+        SOLVEDAC_CLIENT_ID: ${{ inputs.client-id }}
+        SOLVEDAC_CLIENT_SECRET: ${{ inputs.client-secret }}
 
     - name: Ensure AUTO-UPDATE section exists
       run: |

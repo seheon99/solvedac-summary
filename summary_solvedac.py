@@ -1,4 +1,5 @@
 import math
+import os
 import sys
 import time
 
@@ -8,8 +9,11 @@ import requests
 USERNAME = sys.argv[1]
 SOLVED_URL = f"https://solved.ac/{USERNAME}"
 BADGE_URL = f"http://mazassumnida.wtf/api/generate_badge?boj={USERNAME}"
-USER_API_URL = "https://solved.ac/api/v3/user/show"
-TOP_100_API_URL = "https://solved.ac/api/v3/user/top_100"
+USER_API_URL = f"https://solved.ac/api/v4/users/{USERNAME}"
+HEADERS = {
+    "x-client-id": os.environ["SOLVEDAC_CLIENT_ID"],
+    "x-client-secret": os.environ["SOLVEDAC_CLIENT_SECRET"],
+}
 
 PROBLEM_TOP_TIER = 30
 TIER_RATING = [
@@ -29,10 +33,10 @@ MAX_RETRIES = 3
 BACKOFF_BASE = 2
 
 
-def api_get(url, params):
+def api_get(url):
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            response = requests.get(url, params=params, timeout=30)
+            response = requests.get(url, headers=HEADERS, timeout=30)
         except requests.RequestException as exc:
             if attempt == MAX_RETRIES:
                 print(f"Error: request to {url} failed after {MAX_RETRIES} attempts: {exc}", file=sys.stderr)
@@ -75,9 +79,9 @@ def get_tier_color(x):
     return colors[math.ceil(x / 5)]
 
 
-user = api_get(USER_API_URL, {"handle": USERNAME})
+user = api_get(USER_API_URL)
 
-tier = user["tier"]
+tier = user["tier"] or 0
 rating = user["rating"]
 rating_by_problems_sum = user["ratingByProblemsSum"]
 rating_by_class = user["ratingByClass"]
@@ -114,8 +118,8 @@ print()
 print("## 난이도 별 얻게 될 점수")
 print()
 
-top_100 = api_get(TOP_100_API_URL, {"handle": USERNAME})
-lowest_point = top_100["items"][-1]["level"]
+# ponytail: v4 has no top_100 endpoint; ratingProblemsCutoff is the lowest level counted in it
+lowest_point = user["ratingProblemsCutoff"]
 
 print("| Level | Earning Points |")
 print("| :---: | -------------: |")

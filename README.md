@@ -7,6 +7,8 @@
 - uses: seheon99/baekjoon-summary@84d86b3137f6b45e52dcb1d60528ef28bbde411f
   with:
     username: YOUR_BAEKJOON_HANDLE_HERE
+    client-id: YOUR_SOLVEDAC_CLIENT_ID
+    client-secret: ${{ secrets.SOLVEDAC_API_KEY }}
 ```
 
 ### 예시
