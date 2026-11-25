@@ -25,10 +25,12 @@ runs:
           exit 1
         fi
         card() { echo "https://solvedac-cards.seheon.kr/$1/$HANDLE?color=$COLOR"; }
+        # Profile (360 wide) and summary (704) cards shown at the same width; SVGs scale cleanly.
+        WIDTH=704
         cat > README.tmp <<EOF
-        [![solved.ac Profile]($(card profile))](https://solved.ac/$HANDLE)
+        <a href="https://solved.ac/$HANDLE"><img alt="solved.ac Profile" src="$(card profile)" width="$WIDTH"></a>
 
-        ![Summary]($(card summary))
+        <img alt="Summary" src="$(card summary)" width="$WIDTH">
 
         ## 레이팅 변화
 
