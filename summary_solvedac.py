@@ -91,8 +91,6 @@ solved_count = user["solvedCount"]
 
 print(f"[![solved.ac Profile]({BADGE_URL})]({SOLVED_URL})")
 print()
-print(f"![Problems]({CARDS_URL}/problems/{USERNAME})")
-print()
 print(
     f"$\\huge{{\\rm{{\\color{{{get_tier_color(tier + 1)}}}{get_tier_title(tier + 1)}}}}}$까지 **+{TIER_RATING[tier + 1] - rating:,d}** 남음"
 )
@@ -141,3 +139,8 @@ print()
 print("## 태그별 통계")
 print()
 print(f"![Tags]({CARDS_URL}/tags/{USERNAME})")
+
+print()
+print("## 난이도 분포")
+print()
+print(f"![Problems]({CARDS_URL}/problems/{USERNAME})")
