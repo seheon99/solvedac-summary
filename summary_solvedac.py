@@ -96,6 +96,16 @@ print(
 )
 print()
 
+print("## 레이팅 변화")
+print()
+print(f"![Rating]({CARDS_URL}/rating/{USERNAME})")
+print()
+
+print("## 스트릭")
+print()
+print(f"![Streak]({CARDS_URL}/streak/{USERNAME})")
+print()
+
 print("## 레이팅 종합")
 print()
 
