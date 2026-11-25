@@ -1,16 +1,10 @@
 name: Baekjoon profile summary
 
-description: Generate baekjoon rating summary in README.md via solved.ac
+description: Keep solved.ac cards for your profile in README.md
 
 inputs:
   username:
-    description: "백준에서 사용중인 유저 이름"
-    required: true
-  client-id:
-    description: "solved.ac API client ID"
-    required: true
-  client-secret:
-    description: "solved.ac API client secret"
+    description: "solved.ac 핸들"
     required: true
   color:
     description: "카드 테마: light 또는 dark"
@@ -21,13 +15,41 @@ runs:
   using: "composite"
   steps:
     - name: Generate solved.ac summary
-      run: python3 ${{ github.action_path }}/summary_solvedac.py $INPUT_USERNAME > README.tmp
+      run: |
+        if ! [[ "$HANDLE" =~ ^[A-Za-z0-9_]{1,64}$ ]]; then
+          echo "Error: username must match [A-Za-z0-9_]{1,64}, got '$HANDLE'" >&2
+          exit 1
+        fi
+        if [[ "$COLOR" != light && "$COLOR" != dark ]]; then
+          echo "Error: color must be light or dark, got '$COLOR'" >&2
+          exit 1
+        fi
+        card() { echo "https://solvedac-cards.seheon.kr/$1/$HANDLE?color=$COLOR"; }
+        cat > README.tmp <<EOF
+        [![solved.ac Profile]($(card profile))](https://solved.ac/$HANDLE)
+
+        ![Summary]($(card summary))
+
+        ## 레이팅 변화
+
+        ![Rating]($(card rating))
+
+        ## 스트릭
+
+        ![Streak]($(card streak))
+
+        ## 태그별 통계
+
+        ![Tags]($(card tags))
+
+        ## 난이도 분포
+
+        ![Problems]($(card problems))
+        EOF
       shell: bash
       env:
-        INPUT_USERNAME: ${{ inputs.username }}
-        SOLVEDAC_CLIENT_ID: ${{ inputs.client-id }}
-        SOLVEDAC_CLIENT_SECRET: ${{ inputs.client-secret }}
-        SOLVEDAC_CARDS_COLOR: ${{ inputs.color }}
+        HANDLE: ${{ inputs.username }}
+        COLOR: ${{ inputs.color }}
 
     - name: Ensure AUTO-UPDATE section exists
       run: |
@@ -35,13 +57,6 @@ runs:
           echo -e "\n<!-- START AUTO-UPDATE -->\n<!-- END AUTO-UPDATE -->" >> README.md
         elif ! grep -q "<!-- END AUTO-UPDATE -->" README.md; then
           sed -i 's/<!-- START AUTO-UPDATE -->/<!-- START AUTO-UPDATE -->\n<!-- END AUTO-UPDATE -->/' README.md
-        fi
-      shell: bash
-
-    - name: Ensure sed command
-      run: |
-        if ! command -v sed &> /dev/null; then
-          sudo apt-get update && sudo apt-get install -y sed
         fi
       shell: bash
 
