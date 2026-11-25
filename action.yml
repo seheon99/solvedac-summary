@@ -12,6 +12,10 @@ inputs:
   client-secret:
     description: "solved.ac API client secret"
     required: true
+  color:
+    description: "카드 테마: light 또는 dark"
+    required: false
+    default: "light"
 
 runs:
   using: "composite"
@@ -23,6 +27,7 @@ runs:
         INPUT_USERNAME: ${{ inputs.username }}
         SOLVEDAC_CLIENT_ID: ${{ inputs.client-id }}
         SOLVEDAC_CLIENT_SECRET: ${{ inputs.client-secret }}
+        SOLVEDAC_CARDS_COLOR: ${{ inputs.color }}
 
     - name: Ensure AUTO-UPDATE section exists
       run: |
