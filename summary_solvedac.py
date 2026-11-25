@@ -9,7 +9,16 @@ import requests
 USERNAME = sys.argv[1]
 SOLVED_URL = f"https://solved.ac/{USERNAME}"
 CARDS_URL = os.environ.get("SOLVEDAC_CARDS_URL", "https://solvedac-cards.seheon.kr")
-BADGE_URL = f"{CARDS_URL}/profile/{USERNAME}"
+CARDS_COLOR = os.environ.get("SOLVEDAC_CARDS_COLOR") or "light"
+if CARDS_COLOR not in ("light", "dark"):
+    print(f"Error: color must be light or dark, got {CARDS_COLOR!r}", file=sys.stderr)
+    sys.exit(1)
+
+
+def card(kind):
+    return f"{CARDS_URL}/{kind}/{USERNAME}?color={CARDS_COLOR}"
+
+
 USER_API_URL = f"https://solved.ac/api/v4/users/{USERNAME}"
 HEADERS = {
     "x-client-id": os.environ["SOLVEDAC_CLIENT_ID"],
@@ -89,7 +98,7 @@ rating_by_class = user["ratingByClass"]
 rating_by_solved_count = user["ratingBySolvedCount"]
 solved_count = user["solvedCount"]
 
-print(f"[![solved.ac Profile]({BADGE_URL})]({SOLVED_URL})")
+print(f"[![solved.ac Profile]({card('profile')})]({SOLVED_URL})")
 print()
 print(
     f"$\\huge{{\\rm{{\\color{{{get_tier_color(tier + 1)}}}{get_tier_title(tier + 1)}}}}}$까지 **+{TIER_RATING[tier + 1] - rating:,d}** 남음"
@@ -98,12 +107,12 @@ print()
 
 print("## 레이팅 변화")
 print()
-print(f"![Rating]({CARDS_URL}/rating/{USERNAME})")
+print(f"![Rating]({card('rating')})")
 print()
 
 print("## 스트릭")
 print()
-print(f"![Streak]({CARDS_URL}/streak/{USERNAME})")
+print(f"![Streak]({card('streak')})")
 print()
 
 print("## 레이팅 종합")
@@ -148,9 +157,9 @@ print(
 print()
 print("## 태그별 통계")
 print()
-print(f"![Tags]({CARDS_URL}/tags/{USERNAME})")
+print(f"![Tags]({card('tags')})")
 
 print()
 print("## 난이도 분포")
 print()
-print(f"![Problems]({CARDS_URL}/problems/{USERNAME})")
+print(f"![Problems]({card('problems')})")

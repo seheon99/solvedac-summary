@@ -9,6 +9,7 @@
     username: YOUR_BAEKJOON_HANDLE_HERE
     client-id: YOUR_SOLVEDAC_CLIENT_ID
     client-secret: ${{ secrets.SOLVEDAC_API_KEY }}
+    color: light # 또는 dark (기본값 light)
 ```
 
 ### 예시
