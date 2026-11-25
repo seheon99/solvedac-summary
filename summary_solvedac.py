@@ -91,8 +91,6 @@ solved_count = user["solvedCount"]
 
 print(f"[![solved.ac Profile]({BADGE_URL})]({SOLVED_URL})")
 print()
-print(f"![Tags]({CARDS_URL}/tags/{USERNAME})")
-print()
 print(f"![Problems]({CARDS_URL}/problems/{USERNAME})")
 print()
 print(
@@ -139,22 +137,7 @@ print(
     f"[^1]: `{min(rating_by_solved_count + 1, 200)} = round(200 * (1 - 0.997 ** {solved_count + count}))`"
 )
 
-# ponytail: tag keys as-is (dp, greedy, ...); localized names need /api/v4/tags
-tags = sorted(user["tagRatings"], key=lambda t: -t["solvedCount"])[:15]
-
 print()
 print("## 태그별 통계")
 print()
-print("```mermaid")
-print("xychart-beta")
-print('    title "태그별 푼 문제"')
-print(f"    x-axis [{', '.join(f'"{t["key"]}"' for t in tags)}]")
-print('    y-axis "Solved"')
-print(f"    bar [{', '.join(str(t['solvedCount']) for t in tags)}]")
-print("```")
-print()
-print("| Tag | Solved | Rating |")
-print("| --- | -----: | -----: |")
-for t in tags:
-    t_tier = sum(t["rating"] >= r for r in TIER_RATING[1:])
-    print(f"| [{t['key']}](https://solved.ac/problems/tags/{t['key']}) | {t['solvedCount']} | {get_tier_title(t_tier)} ({t['rating']:,d}) |")
+print(f"![Tags]({CARDS_URL}/tags/{USERNAME})")
