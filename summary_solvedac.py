@@ -9,7 +9,7 @@ import requests
 USERNAME = sys.argv[1]
 SOLVED_URL = f"https://solved.ac/{USERNAME}"
 CARDS_URL = os.environ.get("SOLVEDAC_CARDS_URL", "https://solvedac-cards.seheon.kr")
-BADGE_URL = f"http://mazassumnida.wtf/api/generate_badge?boj={USERNAME}"
+BADGE_URL = f"{CARDS_URL}/profile/{USERNAME}"
 USER_API_URL = f"https://solved.ac/api/v4/users/{USERNAME}"
 HEADERS = {
     "x-client-id": os.environ["SOLVEDAC_CLIENT_ID"],
@@ -91,7 +91,9 @@ solved_count = user["solvedCount"]
 
 print(f"[![solved.ac Profile]({BADGE_URL})]({SOLVED_URL})")
 print()
-print(f"![Tags]({CARDS_URL}/tags/{USERNAME}?text=true) ![Problems]({CARDS_URL}/problems/{USERNAME})")
+print(f"![Tags]({CARDS_URL}/tags/{USERNAME})")
+print()
+print(f"![Problems]({CARDS_URL}/problems/{USERNAME})")
 print()
 print(
     f"$\\huge{{\\rm{{\\color{{{get_tier_color(tier + 1)}}}{get_tier_title(tier + 1)}}}}}$까지 **+{TIER_RATING[tier + 1] - rating:,d}** 남음"

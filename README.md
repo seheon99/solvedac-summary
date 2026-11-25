@@ -1,10 +1,10 @@
-# baekjoon-summary
+# solvedac-summary
 
 # 사용 방법
 
 ```yml
 - uses: actions/checkout@v5
-- uses: seheon99/baekjoon-summary@84d86b3137f6b45e52dcb1d60528ef28bbde411f
+- uses: seheon99/solvedac-summary@84d86b3137f6b45e52dcb1d60528ef28bbde411f
   with:
     username: YOUR_BAEKJOON_HANDLE_HERE
     client-id: YOUR_SOLVEDAC_CLIENT_ID
